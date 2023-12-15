@@ -1,12 +1,18 @@
 <div class="h-screen flex justify-center items-center">
-  <div class="w-1/2 grid gap-y-4 sm:text-xl lg:text-2xl bg-gray-200 m-4 px-4 py-10 rounded-xl ">
+  <div class="w-1/2 sm:text-base lg:text-xl bg-gray-200 m-4 px-4 py-10 rounded-xl ">
     <%= form_with url: verify_path, method: :post do |form| %>
       <div class="flex flex-col justfy-center mt-2 p-4">
-        <div class="w-full bg-orange-200 p-2 rounded-t-lg">
+        <div class="w-full bg-orange-200 p-2 rounded-lg ">
+          <%= form.label :address, "Address:", class: "w-2/3" %>
+        </div>
+        <div class="w-full rounded-lg mt-1">
+          <%= form.text_field :address, class: "border-2 border-blue-200 w-full p-2 rounded-lg text-base" %>
+        </div>
+        <div class="w-full mt-2 bg-orange-200 p-2 rounded-lg ">
           <%= form.label :signature, "Signature:", class: "w-2/3" %>
         </div>
-        <div class="w-full rounded-lg">
-          <%= form.text_area :signature, rows: 4, class: "w-full p-2 rounded-b-lg text-base" %>
+        <div class="w-full rounded-lg mt-1">
+          <%= form.text_area :signature, rows: 4, class: "border-2 border-blue-200 w-full p-2 rounded-lg text-base" %>
         </div>
         <div class="flex justfy-center mt-10">
           <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700" />
@@ -23,45 +29,40 @@
 
 <script>
 
-  if (! window.ethereum) {
-alert("aaaa");
-  }
+  function myHandler() {
+    if (! window.ethereum) {
+      alert("MetaMask is not directed. Please install MetaMask extension first.");
+      return
+    }
 
-// Check if MetaMask is installed
-if (window.ethereum) {
-    // Use MetaMask provider
     const web3 = new Web3(window.ethereum);
-
-    // Request account access
     window.ethereum.request({ method: 'eth_requestAccounts' })
-        .then(accounts => {
-            const accountAddress = accounts[0];
-            console.log('Account Address:', accountAddress);
+      .then(accounts => {
+        const accountAddress = accounts[0];
+        console.log('Account Address:', accountAddress);
 
-            // Now you can use this address for further operations
+        const addrInput = document.getElementById("address");
+        addrInput.value = accountAddress;
 
+        const message = "<%= @message %>";
 
-          const message = "<%= @message %>";
-            const fromAddress = accountAddress;
-
-            web3.eth.personal.sign(message, fromAddress, (error, signature) => {
-                if (!error) {
-                    console.log("Signature: ", signature);
-                  const sigInput = document.getElementById("signature");
-                  sigInput.value = signature;
-                    // Handle the signature as needed
-                } else {
-                    console.error("Error signing message: ", error);
-                }
-            });
-
-
-        })
-        .catch(error => {
-            console.error('Error requesting accounts:', error);
+        web3.eth.personal.sign(message, accountAddress, (error, signature) => {
+          if (!error) {
+            console.log("Signature: ", signature);
+            const sigInput = document.getElementById("signature");
+            sigInput.value = signature;
+          } else {
+            alert("Error signing message: " + error);
+            return;
+          }
         });
-} else {
-    console.error('MetaMask not detected. Please install MetaMask extension.');
-}
+      })
+      .catch(error => {
+          alert("Error requesting accounts: " + error);
+          return;
+      });
+  };
+
+  myHandler();
 
 </script>
