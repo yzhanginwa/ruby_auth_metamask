@@ -14,8 +14,12 @@ module RubyAuthMetamask
 
   class UsersController < ApplicationController
     def signin
-      @message = "ruby_auth_metamask:#{SecureRandom.hex}"
-      session[:message] = @message
+      if session[:user_id].nil?
+        @message = "ruby_auth_metamask:#{SecureRandom.hex}"
+        session[:message] = @message
+      else
+        redirect_to main_app.root_path
+      end
     end
 
     def verify
