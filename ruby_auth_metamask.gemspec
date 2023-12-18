@@ -23,6 +23,6 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_dependency "rails", ">= 7.1.2"
-  spec.add_dependency "ecdsa"
-  spec.add_dependency "keccak"
+  spec.add_dependency "ecdsa", "~> 1.2.0"
+  spec.add_dependency "keccak", "~> 1.3.1"
 end
