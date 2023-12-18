@@ -44,11 +44,11 @@ module RubyAuthMetamask
       end
 
       valid = ECDSA.valid_signature?(public_key, hash, my_signature.sig_obj) rescue false
-      if valid
-        redirect_to main_app.root_path, notice: 'User authenticated successfully'
-      else
-        redirect_to main_app.root_path, notice: 'User authentication failed'
-      end
+      redirect_to main_app.root_path, notice: 'User authentication failed' unless valid
+
+      user = User.find_by_address(address) || User.create(address: address)
+      session[:user_id] = user.id
+      redirect_to main_app.root_path, notice: 'User authentication succeeded' unless valid
     end
 
     private
