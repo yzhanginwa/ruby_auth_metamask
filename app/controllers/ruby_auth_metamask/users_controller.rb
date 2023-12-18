@@ -48,7 +48,7 @@ module RubyAuthMetamask
 
       user = User.find_by_address(address) || User.create(address: address)
       session[:user_id] = user.id
-      redirect_to main_app.root_path, notice: 'User authentication succeeded' unless valid
+      redirect_to main_app.root_path, notice: 'User authentication succeeded'
     end
 
     private
