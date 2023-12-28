@@ -1,5 +1,15 @@
+[![Gem Version](https://badge.fury.io/rb/ruby_auth_metamask.svg)](https://badge.fury.io/rb/ruby_auth_metamask)
+
+### Table of Contents
+* [What is RubyAuthMetamask](#rubyauthmetamask)
+* [Usage](#usage)
+* [Installation](#installation)
+* [Contributing](#contributing)
+* [License](#license)
+
 # RubyAuthMetamask
-Short description and motivation.
+This is a rails engine which helps developers to authenticate users through
+Metamask extension of browsers.
 
 ## Usage
 How to use my plugin.
